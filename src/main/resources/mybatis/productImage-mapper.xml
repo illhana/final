@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="productImage">
+   
+      <insert id="insert">
+      insert into product_image values (product_image_seq.nextval, #{parentSeq}, #{oriName}, #{sysName}, null)
+   </insert>
+   
+   <select id="getProductListImage" resultType="String">
+      select sysName from product_image where seq in (select min(seq) from product_image group by parentSeq) order by parentSeq desc
+   </select>
+   
+   <select id="getProductDtoImage" resultType="kh.spring.dto.ProductImageDTO">
+      select * from product_image where parentSeq=#{seq} order by seq asc
+   </select>
+   
+   <delete id="deleteSavedImage">
+      delete from product_image where seq=#{seq}
+   </delete>
+   
+   <delete id="delete">
+      delete from product_image where parentSeq=#{seq}
+   </delete>
+  
+  
+   
+   <select id="getProductDetailImage" resultType="String">
+     select sysName from product_image where parentSeq=#{value}
+   </select>
+   
+   <select id="getProductOneImage" resultType="String">
+     select sysName from product_image where parentSeq=${value} and ROWNUM=1
+   </select>
+   
+    <select id="getSysNameListImageCate" resultType="String">
+     select sysName from product_image where seq in (select min(seq) from product_image where parentSeq in (select seq from product where category=#{category} ) group by parentSeq) order by seq desc
+    </select>
+    
+    <select id="getSysNameListImageSearch" resultType="String">
+     select sysName from product_image where seq in (select min(seq) from product_image where parentSeq=#{parentSeq} ) 
+    </select>
+    
+    <select id="getSysNameTwelveImageCate" resultType="String">
+     select sysname, num from (select row_number() over(order by product_image.seq asc) as num, sysname from product_image where seq in (select min(product_image.seq) from product_image join product on product_image.parentseq=product.seq and product.category=#{category} group by product_image.parentseq) order by seq desc) where num between #{start} and #{end}
+    </select>
+    
+</mapper>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="Member">
+
+    <select id="isIdDupl" resultType="int">
+       select count(*) from member where id=#{value}
+    </select>
+    
+    <select id="isPhoneDupl" resultType="int">
+       select count(*) from member where phone=#{value}
+    </select>
+    
+    <select id="isEmailDupl" resultType="int">
+       select count(*) from member where email=#{value}
+    </select>
+  
+     <insert id="insert">
+       insert into member values(#{id}, #{pw}, #{name}, #{phone}, #{email}, #{zipcode}, #{roadAddress}, #{jibunAddress}, #{specAddress}, #{personalAnswer}, default, default, default)
+    </insert>
+    
+    <select id="login" resultType="int">
+        select count(*) from member where id=#{id} and pw = #{pw}
+     </select>
+     
+     <select id="blackListCheck" resultType="int">
+        select blackList from member where id=#{id}
+     </select>
+    
+    <update id="memberOut">
+       update member set memberOut=1, phone='memberOut', email='memberOut' where id=#{id }
+<!--        하나의 값(값 하나 넘어올 때) -->
+    </update>
+    
+    <select id="memberOutCheck" resultType="int">
+       select memberOut from member where id=#{id}
+    </select>
+    
+    <select id="findIdC" resultType="String">
+       select id from member where name=#{name} and phone=#{phone}
+    </select>
+    
+    <select id="findPwC" resultType="String">
+       select id from member where id=#{id} and personalAnswer=#{personalAnswer}
+    </select>
+    
+    <update id="pwUpdR">
+       update member set pw=#{pw} where id=#{id}
+    </update>
+    
+    <select id="myPage" resultType="kh.spring.dto.MemberDTO">
+       select * from member where id=#{loginId}      
+    </select>
+    
+    <select id="myPageD" resultType="kh.spring.dto.MemberDTO">
+       select * from member where id=#{loginId}      
+    </select>
+    
+    <update id="update">
+       update member set phone=#{phone}, email=#{email}, zipcode=#{zipcode}, roadAddress=#{roadAddress}, jibunAddress=#{jibunAddress}, specAddress=#{specAddress}, imageSysName=#{imageSysName} where id=#{id}
+    </update>
+    
+    <select id="getImageSysName" resultType="String">
+       select imageSysName from member where id=#{value}
+    </select>
+    
+    <select id="list" resultType="kh.spring.dto.MemberDTO">
+       select * from member where id not in('admin1234', 'admin12345', 'admin123456')
+    </select>
+    
+    <update id="addBlackList">
+       update member set blackList=1 where id=#{id}
+    </update>
+    
+    <update id="deleteBlackList">
+       update member set blackList=0 where id=#{id}
+    </update>
+    
+    <select id="myPagePwC" resultType="String">
+       select pw from member where id=#{id} and pw=#{pw}
+    </select>
+    
+    <select id="personalInfo" resultType="kh.spring.dto.MemberDTO">
+       select * from member where id=#{id}
+    </select>
+    
+    <select id="bidBuyBid" resultType="kh.spring.dto.BuyBidDTO">
+       select * from buy_bid where id=#{id} order by seq desc
+    </select>
+    
+    <select id="bidProductList" resultType="kh.spring.dto.ProductDTO">
+       select * from product where seq=#{seq} 
+    </select>
+    
+    <select id="bidSysNameList" resultType="String">
+        select sysName from product_image where seq in (select min(seq) from product_image where parentSeq=#{seq} group by parentSeq) order by parentSeq desc
+    </select>
+    
+    <select id="endBuyList" resultType="kh.spring.dto.BuyListDTO">
+       select * from buy_list where buyerId=#{id} order by buydate desc
+    </select>
+    
+    <select id="endProductList" resultType="kh.spring.dto.ProductDTO">
+       select * from product where seq=#{seq} 
+    </select>
+    
+    <select id="endSysNameList" resultType="String">
+        select sysName from product_image where seq in (select min(seq) from product_image where parentSeq=#{seq} group by parentSeq) order by parentSeq desc
+    </select>
+
+   <select id="saleBid" resultType="kh.spring.dto.SellBidDTO">
+      select * from sell_bid where id=#{id} order by seq desc
+   </select>
+   
+   <select id="bidProductList2" resultType="kh.spring.dto.ProductDTO">
+       select * from product where seq=#{seq} 
+    </select>
+    
+    <select id="bidSysNameList2" resultType="String">
+        select sysName from product_image where seq in (select min(seq) from product_image where parentSeq=#{seq} group by parentSeq) order by parentSeq desc
+    </select>
+    
+    <select id="endSellList" resultType="kh.spring.dto.SellListDTO">
+       select * from sell_list where sellerId=#{id} order by selldate desc
+    </select>
+    
+    <select id="endProductList2" resultType="kh.spring.dto.ProductDTO">
+       select * from product where seq=#{seq} 
+    </select>
+    
+    <select id="endSysNameList2" resultType="String">
+        select sysName from product_image where seq in (select min(seq) from product_image where parentSeq=#{seq} group by parentSeq) order by parentSeq desc
+    </select>
+    
+    <select id="myProduct" resultType="kh.spring.dto.WishListDTO">
+       select * from wish_list where parentid=#{id} order by seq desc
+    </select>
+    
+    <select id="myProductList" resultType="kh.spring.dto.ProductDTO">
+       select * from product where seq=#{seq} 
+    </select>
+    
+    <select id="mySysNameList" resultType="String">
+        select sysName from product_image where seq in (select min(seq) from product_image where parentSeq=#{seq} group by parentSeq) order by parentSeq desc
+    </select>
+    
+<!--  다현 -->
+<!--  해당 writer가 member로 존재하는지 여부 확인 -->
+    <select id="isExistWriter" resultType="int">
+       select count(*) from member where id=#{writer} and memberOut=1
+    </select>
+    
+</mapper>

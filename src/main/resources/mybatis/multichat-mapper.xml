@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="Multichat">
+  
+  <insert id="insert">
+  	insert into multichat values(multichat_seq.nextval, #{writer}, #{contents}, #{profileSysName}, #{imageSysName}, sysdate, 'temp')
+  </insert>
+  
+  <select id="selectAll" resultType="kh.spring.dto.ChatDTO">
+  	select * from (select * from multichat where rownum between 1 and 200 order by seq desc) order by seq asc
+  </select>
+  
+  <select id="selectOne" resultType="kh.spring.dto.ChatDTO">
+  	select * from (select * from multichat where writer=#{loginId} order by seq desc) where rownum = 1
+  </select>
+  
+  <!-- 프로필 사진 수정 -->
+  <update id="updateProfile">
+	update multichat set profileSysName = #{profileSysName} where writer=#{loginId}
+  </update>
+  </mapper>

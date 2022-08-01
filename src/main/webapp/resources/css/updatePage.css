@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+}
+
+.detailProfileImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.icon {
+  height: 50px;
+}
+.profileIcon {
+  width: 25px;
+  height: 25px;
+  margin: 0px 0px 5px 3px;
+}
+.profileWriter {
+  font-size: 15px;
+}
+.stImgDiv {
+  height: auto;
+  /* height: 310px; */
+  border: 1px solid lightgray;
+  border-radius: 15px;
+  padding: 0 !important;
+}
+
+.stImgDiv img {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  object-fit: cover;
+}
+
+/* 사진 미리보기 부분 */
+.file {
+  border:2px solid #515151;
+  border-bottom:none;
+  border-top-left-radius:10px;
+  border-top-right-radius:10px;
+}
+/* input file custom */
+input[type="file"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+
+label {
+  cursor: pointer;
+  vertical-align: middle;
+  /* border-radius: 20px !important; */
+  /* background-color: #a3a3a3 !important; */
+  /* color: white !important; */
+  /* padding: 8px 16px !important; */
+}
+
+label img {
+  width: 25px;
+  height: 25px;
+}
+
+.contents {
+	width:100%;
+	height:250px;
+	border-bottom-left-radius:10px;
+	border-bottom-right-radius:10px;
+	border:2px solid #515151;
+    overflow-y:auto;
+	overflow-x:hidden;
+	padding:10px !important;
+	vertical-align: top;
+	resize:none;
+}
+
+.uploadBtn {
+  background-color: #262626 !important;
+  /* border: 1px solid #d3d3d3 !important; */
+  border-radius: 20px !important;
+  /* font-size: 1px !important; */
+  color: white !important;
+  padding: 7px 14px !important;
+  width: 100px;
+}
+
+.cancelBtn {
+  background-color: #262626 !important;
+  border-radius: 20px !important;
+  color: white !important;
+  padding: 7px 14px !important;
+  width: 100px;
+}
+
+
+@media (max-width: 992px) {
+  .col-3 {
+    display: none;
+  }
+}

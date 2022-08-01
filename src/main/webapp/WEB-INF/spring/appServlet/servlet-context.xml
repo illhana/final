@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources location="/resources/css/" mapping="/css/**"  />
+	<resources location="/resources/js/" mapping="/js/**"  />
+	<resources location="/resources/images/" mapping="/images/**"  />
+	<resources location="/resources/image/" mapping="/image/**"  />
+	<resources location="/resources/icon/" mapping="/icon/**"  />
+	<resources location="/resources/roulette/" mapping="/roulette/**"  />
+	<resources location="/upload/" mapping="/upload/**"  />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<!-- Apache Commons File Upload -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10485760"/><!-- 최대 용량 10mb -->
+	</beans:bean>	
+	
+	<context:component-scan base-package="kh.spring" />
+	
+	<!-- 	로그인이 필요없는 코드 작성 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"/>
+			<exclude-mapping path="/"/>
+			<exclude-mapping path="/about"/>
+			<exclude-mapping path="/**/*.css"/>
+			<exclude-mapping path="/**/*.icon"/>
+			<exclude-mapping path="/**/*.image"/>
+			<exclude-mapping path="/**/*.images"/>
+			
+			<exclude-mapping path="/**/*.png/"/>
+			<exclude-mapping path="/**/*.jpg/"/>
+			<exclude-mapping path="/**/*.JPG/"/>
+			<exclude-mapping path="/**/*.jpeg/"/>
+			<exclude-mapping path="/**/*.gif/"/>
+			
+		 	<exclude-mapping path="/member/loginGo"/>
+         	<exclude-mapping path="/member/login"/>
+         	<exclude-mapping path="/member/logout"/>
+         	<exclude-mapping path="/member/signUp"/>
+         	<exclude-mapping path="/member/join"/>
+         	<exclude-mapping path="/member/findId"/>
+         	<exclude-mapping path="/member/findIdCheck"/>
+         	<exclude-mapping path="/member/findPw"/>
+         	<exclude-mapping path="/member/findPwCheck"/>
+         	<exclude-mapping path="/member/idDuplCheck"/>
+         	<exclude-mapping path="/member/pwUpdate"/>
+         	<exclude-mapping path="/member/pwUpdateRe"/>
+         	<exclude-mapping path="/member/phoneDuplCheck"/>
+         	<exclude-mapping path="/member/emailDuplCheck"/>
+			
+			<exclude-mapping path="/style/toStyleMain"/>
+			<exclude-mapping path="/style/famousStyle"/>
+			<exclude-mapping path="/style/newStyle"/>
+			<exclude-mapping path="/style/toDetail"/>
+			<exclude-mapping path="/style/toStylePage"/>
+			<exclude-mapping path="/chat/onOpen"/>
+			
+			<exclude-mapping path="/error"/>
+			<beans:bean class="kh.spring.interceptor.LoginValidator"/>
+		</interceptor>	
+	</interceptors>
+	
+</beans:beans>

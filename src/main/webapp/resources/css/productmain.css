@@ -1,0 +1,71 @@
+/* 상품 출력 */
+
+.pdListDiv, .stListDiv{
+  display: flex !important;
+
+  justify-content: space-between !important;
+}
+.pdDiv, .stDiv {
+  font-weight: 900;
+  font-size: 18px;
+}
+
+/* .btn-pore{
+    border: 1px solid #d3d3d3 !important;
+    background-color: black;
+    padding: 7px 25px !important;
+    border-radius: 12px !important;
+    font-size: 15px !important;
+    
+    color: white !important;
+    margin-left: 1190px !important;
+} */
+
+
+
+
+.pdImgDiv {
+  height: 280px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  background-color: #ebf0f5;
+  }
+
+  .btn-nobg {
+    border: 1px solid #d3d3d3 !important;
+    background-color: none;
+    padding: 7px 25px !important;
+    border-radius: 12px !important;
+    font-size: 15px !important;
+    color: #2d2d2d !important;
+  }
+  
+
+
+  .pdImgDiv img {
+    /* width: 100%; */
+    height: 100%;
+/*     object-fit: cover;
+    object-position: center;
+    box-sizing: border-box; */
+  }
+  
+  .pdBrand {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  
+  .pdName {
+    font-size: 14px;
+  }
+  
+  .pdPrice {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  
+  /* 북마크 아이콘 */
+  .bookmark {
+    width: 30px;
+    height: 30px;
+  }

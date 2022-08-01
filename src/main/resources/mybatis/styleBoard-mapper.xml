@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="StyleBoard">
+  
+  	<insert id="insert">
+  		insert into style_board values(style_board_seq.nextval, #{writer}, #{contents}, #{profileSysName}, #{imageSysName}, #{likey}, sysdate, 'temp', default)
+  	</insert>
+  	
+  	<select id="selectAll" resultType="kh.spring.dto.StyleBoardDTO">
+  		select * from style_board order by seq desc
+  	</select>
+  	    
+    <!-- 게시글 정렬 -> 좋아요순 -->
+    <select id="orderByLikey" resultType="kh.spring.dto.StyleBoardDTO">
+    	select * from style_board order by likey desc, seq desc 
+    </select>
+  	
+  	<select id="selectById" resultType="kh.spring.dto.StyleBoardDTO">
+  		select * from style_board where writer=#{loginId} order by seq desc
+  	</select>
+  	
+  	<!-- 게시글 Count  -->
+  	<select id="boardCount" resultType="int">
+  		select count(*) from style_board where writer=#{writer}
+  	</select>
+  	
+  	<select id="selectBySeq" resultType="kh.spring.dto.StyleBoardDTO">
+  		select * from style_board where seq=#{seq}
+  	</select>
+  	
+  	<delete id="deleteBySeq">
+  		delete from style_board where seq=#{seq}
+  	</delete>
+  	<delete id="deleteByWriter">
+  		delete from style_board where writer=#{writer}
+  	</delete>
+  	
+  	<update id="updateBySeq">
+  		update style_board set contents = #{contents}, imageSysName = #{imageSysName}, writeDate=sysdate where seq = #{seq} 
+  	</update>
+  	
+  	<!-- 프로필 사진 수정 -->
+  	<update id="updateProfile">
+  		update style_board set profileSysName = #{profileSysName} where writer=#{loginId}
+  	</update>
+  	
+  	
+  	<!-- 댓글 Count(*) -->
+  	<update id="updateReplyCount">
+  		update style_board set replyCount=replyCount+1 where seq=#{seq}
+  	</update>
+  	
+  	<update id="deleteReplyCount">
+  		update style_board set replyCount=replyCount-1 where seq=#{seq}
+  	</update>
+  	
+
+  	
+  	<!-- 좋아요 -->
+    <update id="like" parameterType="int">
+       update style_board set likey = likey+1 where seq = ${seq}
+    </update>
+    
+	<!-- 좋아요 취소 -->
+    <update id="dislike" parameterType="int">
+       update style_board set likey = likey-1 where seq = ${seq}
+    </update>
+    
+   <!-- 좋아요한 사람의 정보 추가 -->
+    <insert id="likeInfo">
+       insert into board_like values(board_like_seq.nextval, #{id}, ${parent_seq})
+    </insert>
+    
+   <!-- 좋아요한 사람의 정보 삭제 -->
+    <delete id="dislikeInfo">
+       delete from board_like where parent_seq = ${seq} and id= #{loginId}
+    </delete>
+    
+   <!-- 좋아요 중복 확인 -->
+    <select id ="likeCheck" resultType="int">
+       select count(*) from board_like where parent_seq= ${seq} and id=#{loginId}
+    </select>
+    
+   <!-- 좋아요 총 갯수 우선 필요 없어 보임-->
+    <select id = "likeCount" resultType="kh.spring.dto.StyleBoardDTO">
+       select like_count from board_like where parent_seq= ${seq}
+    </select>
+    
+    <!-- 탈퇴한 계정의 게시글에 접근 -->
+<!--     <select id="memberOutWriter" resultType="kh.spring.dto.MemberDTO"> -->
+<!--     	select id from member join style_board on (writer = id) -->
+<!--     </select> -->
+
+  </mapper>

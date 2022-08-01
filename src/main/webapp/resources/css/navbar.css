@@ -1,0 +1,81 @@
+.subNav {
+  /* background-color: blue !important; */
+  height: 40px !important;
+  border-bottom: 1px solid lightgray;
+  font-size: 14px !important;
+}
+
+.logo {
+  font-family: "Nanum Gothic", sans-serif;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  font-size: 25px !important;
+}
+.mainNav,
+.mdMainNav {
+  height: 60px !important;
+  /* border-bottom: 1px solid lightgray; */
+}
+.menu,
+.searchInput,
+.searchInput::placeholder {
+  font-size: 16px !important;
+}
+.searchInput {
+  border-radius: 15px !important;
+}
+.searchIcon {
+  width: 15px;
+  height: 15px;
+}
+.navSearchBtn {
+  background-color: none !important;
+  border: none !important;
+  border-radius: 18px !important;
+}
+.navSearchBtn:hover {
+  border-radius: 18px;
+  background-color: rgba(235, 233, 233, 0.6);
+  transition: none !important;
+}
+.searchBtn:hover::after {
+  border-radius: 18px;
+  background-color: rgba(235, 233, 233, 0.6);
+}
+
+/* mdSize Nav */
+.mdNavBtn {
+  border: none !important;
+  outline: none !important;
+}
+.mdNavMenu {
+  width: 100%;
+  z-index: 1000;
+  background-color: white;
+}
+
+.curPage {
+  color: #515151 !important;
+  font-weight: 700;
+  text-decoration: underline !important;
+}
+
+@media (max-width: 768px) {
+  .subNav,
+  .mainNav {
+    display: none !important;
+  }
+
+  .navLogin {
+    font-weight: 600;
+  }
+
+  .searchInput {
+    width: 40% !important;
+  }
+
+  .navbar-nav li {
+    border-bottom: 1px solid lightgray;
+  }
+}

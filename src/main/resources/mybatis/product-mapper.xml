@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="product">
+   
+   
+   <insert id="insert">
+      insert into product values (product_seq.nextval, #{category}, #{brand}, #{title}, #{name}, #{color}, ${releasePrice}, 0, null)
+   
+      <selectKey order="AFTER" keyProperty="seq" resultType="int">
+         select product_seq.currval from dual
+      </selectKey>
+   </insert>
+   
+   <select id="getProductList" resultType="kh.spring.dto.ProductDTO">
+      select * from product order by seq desc
+   </select>
+   
+   <select id="getProductDto" resultType="kh.spring.dto.ProductDTO">
+      select * from product where seq=#{seq}
+   </select>
+   
+   <update id="update">
+      update product set category=#{category}, brand=#{brand}, title=#{title}, name=#{name}, color=#{color}, releasePrice=#{releasePrice} where seq=#{seq}
+   </update>
+   
+   <delete id="delete">
+      delete from product where seq=#{seq}
+   </delete>
+   
+   
+   
+   
+  
+   
+   
+  
+   
+   <select id="getProductDetail" resultType="kh.spring.dto.ProductDTO">
+     select * from product where seq=#{value}
+   </select>
+   
+   
+   <select id="getTotalMinPrice" resultType="String">
+      select min(price) from sell_bid where parentSeq=#{value}
+   </select>
+   
+   <select id="getTotalMaxPrice" resultType="String">
+      select max(price) from buy_bid where parentSeq=#{value}
+   </select>
+   
+   <select id="getMinPrice" resultType="String">
+      select min(price) from sell_bid
+      <trim prefix="where" prefixOverrides="and">
+         <if test="parentSeq!=''">
+            parentSeq=#{parentSeq}
+         </if>
+         <if test="sized!=''">
+            and sized=#{sized}
+         </if>
+      </trim>
+   </select>
+   
+   <select id="getMaxPrice" resultType="String">
+      select max(price) from buy_bid
+      <trim prefix="where" prefixOverrides="and">
+         <if test="parentSeq!=''">
+            parentSeq=#{parentSeq}
+         </if>
+         <if test="sized!=''">
+            and sized=#{sized}
+         </if>
+      </trim>
+   </select>
+   
+   <select id="getMinSeqInMinPrice" resultType="int">
+      select min(seq) from sell_bid where price=(select min(price) from sell_bid where sized=#{sized} and parentseq=#{parentSeq})
+   </select>
+   
+   <delete id="sellBidDeleteBySeq">
+      delete from sell_bid where seq=#{value}
+   </delete>
+   
+   <insert id="insertBuyBid">
+       insert into buy_bid values (buy_bid_seq.nextval, #{parentSeq}, #{sized}, #{finalPrice}, #{buyerId}, null )
+   </insert>
+   
+   <select id="getSellerId" resultType="String">
+      select id from sell_bid where seq=#{value}
+   </select>
+   
+   <insert id="enrollBuyList" >
+      insert into buy_list values (buy_list_seq.nextval,#{buyerId},#{parentSeq},#{finalPrice},#{sized},sysdate,null)
+   </insert>
+   
+   <insert id="enrollSellList">
+      insert into sell_list values (sell_list_seq.nextval,#{sellerId},#{parentSeq},#{finalPrice},#{sized},sysdate,null)
+   </insert>
+   
+   <select id="getMinSeqInMaxPrice" resultType="int">
+      select min(seq) from buy_bid where price=(select max(price) from buy_bid where sized=#{sized} and parentseq=#{parentSeq})
+   </select>
+   
+   <delete id="buyBidDeleteBySeq">
+      delete from buy_bid where seq=#{seq}
+   </delete>
+   
+   <insert id="insertSellBid">
+      insert into sell_bid values (sell_bid_seq.nextval, #{parentSeq}, #{sized}, #{finalPrice}, #{sellerId}, null )
+   </insert>
+   
+   <select id="getBuyerId" resultType="String">
+      select id from buy_bid where seq=#{value}
+   </select>
+   
+   <select id="getProductListCate" resultType="kh.spring.dto.ProductDTO">
+         select * from product where category=#{category} order by seq desc
+   </select>
+   
+   <select id="getWishList" resultType="kh.spring.dto.WishListDTO">
+           select * from wish_list where parentId=#{id}
+   </select>
+   
+   <insert id="enrollWishList">
+         insert into wish_list values (wish_list_seq.nextval,#{parentId},#{parentSeq},null)
+   </insert>
+   
+   <select id="getWishListIdCheck" resultType="String">
+         select parentId from wish_list where parentSeq=#{parentSeq}
+   </select>
+   
+   <delete id="deleteWishList">
+         delete from wish_list where parentSeq=#{parentSeq} and parentId=#{parentId}
+   </delete>
+   
+   <select id="getWishSeqCheck" resultType="int">
+         select parentSeq from wish_list where parentSeq=#{parentSeq} and parentId=#{parentId}
+   </select>
+   
+   <select id="getProductSearch" resultType="kh.spring.dto.ProductDTO">
+         select * from product where title like '%'||#{title}||'%'
+   </select>
+   
+   <select id="getCateProductList" resultType="kh.spring.dto.ProductDTO">
+         select * from product where category=#{category} order by seq desc
+   </select>
+   
+   <select id="getMoreShoes" resultType="kh.spring.dto.ProductDTO">
+         select * from (select ROWNUM , product.* from product) where rownum between #{cnt} and #{end} and category=#{category}
+   </select>
+   
+   <select id="getProductListFM" resultType="kh.spring.dto.ProductDTO">
+         select * from product
+   </select>
+   
+   <insert id="insertOrderList" >
+         insert into order_list values(order_list_seq.nextval,#{parentSeq},#{title},#{price},#{sized},#{category},#{buyerId},#{buyerName},#{buyerPhone},#{jibunAddress},#{sellerId},#{sellerName},#{sellerPhone},sysdate)
+   </insert>
+   
+   <select id="getOrderList" resultType="kh.spring.dto.OrderListDTO">
+         select * from order_list
+   </select>
+   
+   <select id="getjoinDatefromBuyList" resultType="kh.spring.dto.OrderListDTO">
+         select max(buydate) from (select buydate from buy_list where buyerId=#{buyerId} and parentSeq=#{parentSeq} and sized=#{sized} )
+   </select>
+   
+   <select id="getRecordTotalCount" resultType="int">
+         select count(*) from product where category=#{category}
+   </select>
+   
+   <select id="selectByPage" resultType="kh.spring.dto.ProductDTO">
+         select * from (select row_number() over(order by seq desc) line,product.* from product where category=#{category} ) where line between #{start} and #{end}
+   </select>
+   
+   <select id="getImageCntByCate" resultType="int">
+     select count(*) from product where category=#{category}
+   </select>
+</mapper>
